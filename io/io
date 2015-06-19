@@ -1,0 +1,34 @@
+writeln("It's off to work we go!")
+
+# Strongly typed because this is an error:
+# 1 + "1"
+# 1.0 + 2 # is fine because they're both of type number
+
+# What is true? Everything, including 0
+if(0, "0 is true" println, "0 is false" println)
+if(nil, "nil is true" println, "nil is false" println)
+
+undefined_object := nil
+# If undefined_object = nil
+if(undefined_object == false) then("it's not true" println) else("nil is not equal false" println)
+if(undefined_object) then("it's not true" println) else("but nil is false" println)
+
+# Adds an operator with order of precedence 11
+OperatorTable addOperator("xor",11)
+
+true xor := method(bool, if(bool, false, true))
+false xor := method(bool, if(bool, true, false))
+
+(true xor true) println
+true xor false
+
+myTestObject := Object clone
+myTestObject sayHello := method("Hi" println)
+
+myTestObject sayHello
+
+# Execute a string on a given object with relevant slot
+general_string := "sayHello"
+
+"This is reflection executing a string"
+myTestObject getSlot(general_string) call
