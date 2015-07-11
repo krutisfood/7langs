@@ -65,5 +65,5 @@ Builder ul("Io","Lua","Javascript")
 
 # Enhance the XML program to handle attributes: if the first argument is a map (use the curly brackets syntax), add attributes to the XML program.
 #For e.g.
-Builder book({"author": "Jez Humble"},"Lean Enterprise")
+Builder book({"author":"Jez Humble"},"Lean Enterprise")
 # Should print <book author="Tate">...</book>
