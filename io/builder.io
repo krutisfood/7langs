@@ -38,7 +38,7 @@ Builder forward := method(
 
 
 # This is for the attributes
-Map atPutNumber := method(
+Sequence atPutNumber := method(
   self atPut(
     call evalArgAt(0) as Mutable removePrefix("\"") removeSuffix("\""),
       call evalArgAt(1))
