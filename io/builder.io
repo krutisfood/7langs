@@ -5,11 +5,17 @@ writeSpaces := method(numberOfSpaces,
 )
 
 writeIndented := method(
-  varName := (call message arguments) first
-  indentBy := call message indent
-  writeln("Indent by ", indentBy)
-  #for(i, 0, numberOfSpaces, write(" "))
-  writeln("Rest of string here")
+  args := call message arguments
+  writeln(args)
+
+  #indenter := call evalArgAt(0)
+  #writeln("Indent by ", indenter)
+  ##for(i, 0, numberOfSpaces, write(" "))
+  ##writeln(",",arguments)
+  #numberOfArguments := size(call message arguments)
+  #writeln("number", numberOfArguments)
+  ##for(j, 1, numberOfArguments,
+    ##writeln(evalArgAt(j)))
 )
 
 indent := 0
@@ -21,10 +27,13 @@ Builder forward := method(
   call message arguments foreach(
     arg,
     if(call message name == "ul") then (
-      writeln("Arg is:", arg)
+      #writeln("Arg is:", arg)
       #writeln("Arg type:", arg type)
       #writeln("Arg sltoNmaes:", arg slotNames)
-      li(arg) # How do we pass this through as a string?!?
+      #li(arg) # How do we pass this through as a string?!?
+      #writeIndented(indent, "<", call message name, ">")
+      writeSpaces(indent)
+      writeln("<li>", arg, "</li>")
       #doMessage(li arg)
     ) else (
       content := self doMessage(arg);
@@ -38,7 +47,7 @@ Builder forward := method(
 
 
 # This is for the attributes
-Sequence atPutNumber := method(
+Map atPutNumber := method(
   self atPut(
     call evalArgAt(0) as Mutable removePrefix("\"") removeSuffix("\""),
       call evalArgAt(1))
