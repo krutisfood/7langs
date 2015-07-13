@@ -80,24 +80,6 @@ Builder forward := method(
 
 #writeln(OperatorTable)
 
-## Makes : an assignment operator for the "key": "value" syntax
-#OperatorTable addAssignOperator(":","atPutNumber")
-## Returns a map created from "key": "value" syntax
-##Builder curlyBrackets := method(
-#curlyBrackets := method(
-#  r := Map clone
-#  call message arguments foreach(arg,
-#    r doMessage(arg))
-#  r
-#)
-#
-## This is for the attributes
-#Map atPutNumber := method(
-#  self atPut(
-#    call evalArgAt(0) as Mutable removePrefix("\"") removeSuffix("\""),
-#      call evalArgAt(1))
-#)
-
 #Builder ul(
   #li("Io"),
   #li("Lua"),
