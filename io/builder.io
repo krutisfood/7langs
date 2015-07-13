@@ -1,5 +1,30 @@
 Builder := Object clone
 
+OperatorTable addAssignOperator(":","atPutAttributeValue")
+curlyBrackets := method(
+  r := Map clone
+  call message arguments foreach(arg,
+       r doMessage(arg)
+       )
+  r
+)
+Map atPutAttributeValue := method(
+  self atPut(
+       call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""), call evalArgAt(1))
+)
+
+strattributed := "{
+  \"Frnak\": \"555 134\",
+  \"Hailey\": \"555 164\"
+}"
+attr := doString(strattributed)
+
+writeln(attr)
+#writeln({
+  #"Frnak": "555 134",
+  #"Hailey": "555 134"
+#})
+
 writeSpaces := method(numberOfSpaces,
   for(i, 0, numberOfSpaces, write(" "))
 )
@@ -22,7 +47,7 @@ indent := 0
 Builder forward := method(
   #writeIndented(indent, "<", call message name, ">")
   writeSpaces(indent)
-  writeln("<", call message name, ">")
+  write("<", call message name)
   indent = indent + 2
   call message arguments foreach(
     arg,
@@ -30,39 +55,48 @@ Builder forward := method(
       #writeln("Arg is:", arg)
       #writeln("Arg type:", arg type)
       #writeln("Arg sltoNmaes:", arg slotNames)
-      #li(arg) # How do we pass this through as a string?!?
+      #frank := doMessage(arg)
+      #li(arg) # How do we pass this through as a string and not a message which gets its name printed?!?
       #writeIndented(indent, "<", call message name, ">")
-      writeSpaces(indent)
+      #li("Javascript")
+      #li(arg name)
+      #writeSpaces(indent)
       writeln("<li>", arg, "</li>")
       #doMessage(li arg)
     ) else (
       content := self doMessage(arg);
-      # Should be able to do this betterer
+      if(content type == "Map",
+        content keys foreach(key,
+          write(" \"", key, "\"=\"", content at(key), "\""))
+          writeln(">"))
       if(content type == "Sequence",
         writeSpaces(indent)
-        writeln(content))))
+        writeln(content))
+        ))
   indent = indent - 2
   writeSpaces(indent)
   writeln("</", call message name, ">"))
 
 
-# This is for the attributes
-Map atPutNumber := method(
-  self atPut(
-    call evalArgAt(0) as Mutable removePrefix("\"") removeSuffix("\""),
-      call evalArgAt(1))
-)
+#writeln(OperatorTable)
 
-# Makes : an assignment operator for the "key": "value" syntax
-OperatorTable addAssignOperator(":", "atPutNumber")
-
-# Returns a map created from "key": "value" syntax
-Builder curlyBrackets := method(
-  r := Map clone
-  call message arguments foreach(arg,
-    r doMessage(arg))
-  r
-)
+## Makes : an assignment operator for the "key": "value" syntax
+#OperatorTable addAssignOperator(":","atPutNumber")
+## Returns a map created from "key": "value" syntax
+##Builder curlyBrackets := method(
+#curlyBrackets := method(
+#  r := Map clone
+#  call message arguments foreach(arg,
+#    r doMessage(arg))
+#  r
+#)
+#
+## This is for the attributes
+#Map atPutNumber := method(
+#  self atPut(
+#    call evalArgAt(0) as Mutable removePrefix("\"") removeSuffix("\""),
+#      call evalArgAt(1))
+#)
 
 #Builder ul(
   #li("Io"),
@@ -74,5 +108,9 @@ Builder ul("Io","Lua","Javascript")
 
 # Enhance the XML program to handle attributes: if the first argument is a map (use the curly brackets syntax), add attributes to the XML program.
 #For e.g.
-Builder book({"author":"Jez Humble"},"Lean Enterprise")
+attributer := "{
+  \"author\": \"Jez Humble\"
+}"
+Builder book(doString(attributer), "Lean Enterprise")
+#Builder book({"author" : "Jez Humble"},"Lean Enterprise")
 # Should print <book author="Tate">...</book>
