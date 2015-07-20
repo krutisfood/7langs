@@ -13,13 +13,13 @@ Map atPutAttributeValue := method(
        call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""), call evalArgAt(1))
 )
 
-strattributed := "{
-  \"Frnak\": \"555 134\",
-  \"Hailey\": \"555 164\"
-}"
-attr := doString(strattributed)
+#strattributed := "{
+#  \"Frnak\": \"555 134\",
+#  \"Hailey\": \"555 164\"
+#}"
+#attr := doString(strattributed)
+#writeln(attr)
 
-writeln(attr)
 #writeln({
   #"Frnak": "555 134",
   #"Hailey": "555 134"
@@ -48,6 +48,7 @@ Builder forward := method(
   #writeIndented(indent, "<", call message name, ">")
   writeSpaces(indent)
   write("<", call message name)
+  thing_still_open := true
   indent = indent + 2
   call message arguments foreach(
     arg,
@@ -61,6 +62,11 @@ Builder forward := method(
       #li("Javascript")
       #li(arg name)
       #writeSpaces(indent)
+      if(thing_still_open) then (
+        writeln(">")
+        thing_still_open = false
+        )
+      writeSpaces(indent)
       writeln("<li>", arg, "</li>")
       #doMessage(li arg)
     ) else (
