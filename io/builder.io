@@ -1,6 +1,13 @@
 Builder := Object clone
 
 OperatorTable addAssignOperator(":","atPutAttributeValue")
+Builder curlyBrackets := method(
+  r := Map clone
+  call message arguments foreach(arg,
+       r doMessage(arg)
+       )
+  r
+)
 curlyBrackets := method(
   r := Map clone
   call message arguments foreach(arg,
@@ -99,6 +106,11 @@ Builder ul("Io","Lua","Javascript")
 attributer := "{
   \"author\": \"Jez Humble\"
 }"
-Builder book(doString(attributer), "Lean Enterprise")
-#Builder book({"author" : "Jez Humble"},"Lean Enterprise")
+
 # Should print <book author="Tate">...</book>
+# This one evaluates the string, creates a map then passes it in to be looped through
+Builder book(doString(attributer), "Lean Enterprise")
+# This one prints out the thing as a string
+#Builder book(attributer, "Lean Enterprise")
+# This one tries to call method : on Sequence
+#Builder book({"author" : "Jez Humble"},"Lean Enterprise")
